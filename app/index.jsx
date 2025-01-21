@@ -35,6 +35,8 @@ export default function Index() {
         ['@ProfileUsername', username],
         ['@ProfileEmail', email]
       ])
+      onChangeUsername('')
+      setEmail('')
     } catch (e) {
       console.log("problem setting to AsyncStorage >> ", e)
     }
@@ -52,13 +54,13 @@ export default function Index() {
       <View style={{ width: "100%", alignItems: "flex-start" }}>
         <Text>Username</Text>
         <TextInput
-          style={{ borderColor: "lightgray", borderWidth: 1, width: "100%", marginBottom: 16, padding: 16 }}
+          style={{ borderColor: "lightgray", borderWidth: 1, width: "100%", marginBottom: 16, padding: 16, borderRadius: 16 }}
           onChangeText={onChangeUsername}
           value={username}
         />
         <Text>E-mail</Text>
         <TextInput
-          style={{ borderColor: "lightgray", borderWidth: 1, width: "100%", marginBottom: 16, padding: 16 }}
+          style={{ borderColor: "lightgray", borderWidth: 1, width: "100%", marginBottom: 16, padding: 16, borderRadius: 16 }}
           onChangeText={onChangeEmail}
           value={email}
         />
@@ -66,10 +68,16 @@ export default function Index() {
       <View style={{ height: 50, width: "100%", alignItems: "flex-end" }}>
         <Link href="/profile" asChild disabled={isButtonDisabled} onPress={setSkipOnboarding}>
           <Pressable>
-            <Text title="Next" style={{ backgroundColor: "green" }}>Next</Text>
+            <Text style={{
+              backgroundColor: isButtonDisabled ? '#eee' : '#495e57',
+              padding: 16,
+              color: isButtonDisabled ? 'black' : 'white',
+              fontWeight: 'bold',
+              borderRadius: 16
+            }}>Next</Text>
           </Pressable>
         </Link>
       </View>
-    </SafeAreaView>
-  </View>
+    </SafeAreaView >
+  </View >
 }

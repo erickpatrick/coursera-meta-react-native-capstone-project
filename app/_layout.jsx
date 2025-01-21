@@ -3,7 +3,7 @@ import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
 
 export const unstable_settings = {
-  initialRouteName: 'onboarding',
+  initialRouteName: 'onboarding'
 };
 
 export default function RootLayout() {
