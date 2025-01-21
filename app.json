@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.coursera-meta-react-native-capstone-project"
+      "bundleIdentifier": "net.erickpatrick.coursera-meta-react-native-capstone-project"
     },
     "android": {
       "adaptiveIcon": {
