@@ -1,11 +1,13 @@
-import { Pressable, Text, TextInput, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import LittleLemonLogo from '@/components/LittleLemonLogo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link, useNavigation } from 'expo-router';
 import { useEffect, useState } from 'react';
-import LittleLemonLogo from '@/components/LittleLemonLogo';
+import { Pressable, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Index() {
   const navigation = useNavigation();
+
   const [username, onChangeUsername] = useState('')
   const [email, setEmail] = useState('')
   const [validEmail, setValidEmail] = useState(false)
@@ -24,6 +26,15 @@ export default function Index() {
     }
 
     setEmail(email)
+  }
+
+  async function setSkipOnboarding() {
+    try {
+      await AsyncStorage.setItem('@UserFinishedOnboarding', 'true');
+      console.log('finished set skipping')
+    } catch (e) {
+      console.log("problem setting to AsyncStorage >> ", e)
+    }
   }
 
   useEffect(() => {
@@ -50,7 +61,7 @@ export default function Index() {
         />
       </View>
       <View style={{ height: 50, width: "100%", alignItems: "flex-end" }}>
-        <Link href="/profile" asChild disabled={isButtonDisabled}>
+        <Link href="/profile" asChild disabled={isButtonDisabled} onPress={setSkipOnboarding}>
           <Pressable>
             <Text title="Next" style={{ backgroundColor: "green" }}>Next</Text>
           </Pressable>
