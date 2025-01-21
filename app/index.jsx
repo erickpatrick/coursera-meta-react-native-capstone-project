@@ -30,8 +30,11 @@ export default function Index() {
 
   async function setSkipOnboarding() {
     try {
-      await AsyncStorage.setItem('@UserFinishedOnboarding', 'true');
-      console.log('finished set skipping')
+      await AsyncStorage.multiSet([
+        ['@UserFinishedOnboarding', 'true'],
+        ['@ProfileUsername', username],
+        ['@ProfileEmail', email]
+      ])
     } catch (e) {
       console.log("problem setting to AsyncStorage >> ", e)
     }
