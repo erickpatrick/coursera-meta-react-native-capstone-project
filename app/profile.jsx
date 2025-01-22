@@ -5,12 +5,25 @@ import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '@/components/Header';
 import ProfileSectionTitle from '@/components/ProfileSectionTitle'
-import SecondaryButton from '../components/SecondaryButton';
+import SecondaryButton from '@/components/SecondaryButton';
+import FormInput from '@/components/FormInput';
+import FormCheckbox from '../components/FormCheckbox';
 
 export default function Profile() {
   const navigation = useNavigation();
   const router = useRouter()
   const [userData, setUserdata] = useState({})
+
+  const [firstname, setFirstname] = useState(userData['@ProfileFirstname'] || '')
+  const [lastname, setLastname] = useState(userData['@ProfileLastname'] || '')
+  const [email, setEmail] = useState(userData['@ProfileEmail'] || '')
+  const [phone, setPhone] = useState(userData['@ProfilePhone'] || '')
+  const [notifications, setNotifications] = useState(JSON.parse(userData['@ProfileNotifications'] || null) || [
+    { "label": "order_statuses", "value": false },
+    { "label": "password_changes", "value": false },
+    { "label": "special_offers", "value": false },
+    { "label": "newsletter", "value": false }
+  ])
 
   function logout(_event) {
     (async function () { await AsyncStorage.clear() })()
@@ -49,7 +62,19 @@ export default function Profile() {
         alignItems: "flex-start"
       }}>
         <ProfileSectionTitle>Personal information</ProfileSectionTitle>
+        <FormInput label="First name" value={firstname} onChangeValue={setFirstname} />
+        <FormInput label="Last name" value={lastname} onChangeValue={setLastname} />
+        <FormInput label="Email" value={email} onChangeValue={setEmail} />
+        <FormInput label="Phone number" value={phone} onChangeValue={setPhone} />
+
         <ProfileSectionTitle>E-mail notifications</ProfileSectionTitle>
+        {notifications.map(item => <FormCheckbox
+          key={item.label}
+          label={item.label}
+          value={item.value}
+          notifications={notifications}
+          onChangeNotifications={setNotifications} />)}
+
         <SecondaryButton action={logout}>Log out</SecondaryButton>
       </View>
     </SafeAreaView>
