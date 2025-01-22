@@ -1,6 +1,6 @@
 import { Text, TextInput } from "react-native";
 
-export default function FormInput({ label, value, onChangeValue }) {
+export default function FormInput({ label, value, onChangeValue, keyboardType = "default" }) {
     return <>
         <Text style={{
             marginBottom: 8,
@@ -19,6 +19,7 @@ export default function FormInput({ label, value, onChangeValue }) {
             }}
             onChangeText={onChangeValue}
             value={value}
+            keyboardType={keyboardType}
         />
     </>
 }

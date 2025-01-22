@@ -64,8 +64,8 @@ export default function Profile() {
         <ProfileSectionTitle>Personal information</ProfileSectionTitle>
         <FormInput label="First name" value={firstname} onChangeValue={setFirstname} />
         <FormInput label="Last name" value={lastname} onChangeValue={setLastname} />
-        <FormInput label="Email" value={email} onChangeValue={setEmail} />
-        <FormInput label="Phone number" value={phone} onChangeValue={setPhone} />
+        <FormInput label="Email" value={email} onChangeValue={setEmail} keyboardType="email-address" />
+        <FormInput label="Phone number" value={phone} onChangeValue={setPhone} keyboardType="phone-pad" />
 
         <ProfileSectionTitle>E-mail notifications</ProfileSectionTitle>
         {notifications.map(item => <FormCheckbox
