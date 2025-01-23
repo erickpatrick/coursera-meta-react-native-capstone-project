@@ -30,16 +30,15 @@ export default function Index() {
 
   async function setSkipOnboarding() {
     try {
-      await AsyncStorage.multiSet([
-        ['@UserFinishedOnboarding', 'true'],
-        ['@ProfileUsername', username],
-        ['@ProfileEmail', email]
-      ])
-      onChangeUsername('')
-      setEmail('')
+      AsyncStorage.setItem('@UserFinishedOnboarding', 'true')
+      AsyncStorage.setItem('@ProfileUsername', username)
+      AsyncStorage.setItem('@ProfileEmail', email)
     } catch (e) {
       console.log("problem setting to AsyncStorage >> ", e)
     }
+
+    onChangeUsername('')
+    setEmail('')
   }
 
   useEffect(() => {

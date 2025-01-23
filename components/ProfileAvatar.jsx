@@ -1,11 +1,11 @@
 import { Image, Text, View } from "react-native";
 
 export default function ProfileAvatar({ userData }) {
-    const initials = (userData["@ProfileFirstname"] && userData["@ProfileFirstname"].slice(0, 2))
-        || (userData["@ProfileLastname"] && userData["@ProfileLastname"].slice(0, 2))
-        || (userData["@ProfileUsername"] && userData["@ProfileUsername"].slice(0, 2)) || 'JD'
+    const initials = userData.firstname
+        ? userData.firstname.slice(0, 1) + userData.lastname.slice(0, 1)
+        : 'JD'
 
-    const image = userData["@ProfilePicture"]
+    const image = userData.profilePicture
 
     return (image ? <Image src={image} /> : <View>
         <Text style={{
