@@ -1,15 +1,16 @@
-import { View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import FormCheckbox from '@/components/FormCheckbox';
+import FormInput from '@/components/FormInput';
 import Header from '@/components/Header';
-import ProfileSectionTitle from '@/components/ProfileSectionTitle'
 import PrimaryButton from '@/components/PrimaryButton';
+import ProfileSectionTitle from '@/components/ProfileSectionTitle';
 import SecondaryButton from '@/components/SecondaryButton';
 import TertiaryButton from '@/components/TertiaryButton';
-import FormInput from '@/components/FormInput';
-import FormCheckbox from '@/components/FormCheckbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
+import { useNavigation, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { Image, ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -24,6 +25,21 @@ export default function Profile() {
   const [passwordChanges, setPasswordChanges] = useState('')
   const [specialOffers, setSpecialOffers] = useState('')
   const [newsletter, setNewsletter] = useState('')
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images', 'videos'],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   function logout(_event) {
     (async function () { await AsyncStorage.clear() })()
@@ -40,6 +56,7 @@ export default function Profile() {
       await AsyncStorage.setItem("@ProfileNotificationPasswordChanges", passwordChanges)
       await AsyncStorage.setItem("@ProfileNotificationSpecialOffers", specialOffers)
       await AsyncStorage.setItem("@ProfileNotificationNewsletter", newsletter)
+      await AsyncStorage.setItem("@ProfilePicture", image)
     })()
     alert('saved')
   }
@@ -53,6 +70,7 @@ export default function Profile() {
     setPasswordChanges(await AsyncStorage.getItem("@ProfileNotificationPasswordChanges") || 'false')
     setSpecialOffers(await AsyncStorage.getItem("@ProfileNotificationSpecialOffers") || 'false')
     setNewsletter(await AsyncStorage.getItem("@ProfileNotificationNewsletter") || 'false')
+    setImage(await AsyncStorage.getItem("@ProfilePicture") || null)
   }
 
   useEffect(() => {
@@ -66,42 +84,50 @@ export default function Profile() {
   }, [navigation]);
 
   useEffect(() => {
-    setUserdata({ firstname, lastname })
-  }, [firstname, lastname])
+    setUserdata({ firstname, lastname, profilePicture: image })
+  }, [firstname, lastname, image])
 
   return <View style={{ flex: 1, backgroundColor: 'white' }}>
     <SafeAreaView style={{ flex: 1, padding: 16 }}>
       <Header userData={userData} />
 
-      <View style={{
-        borderWidth: 1,
-        borderColor: '#ddd',
-        borderRadius: 16,
-        paddingVertical: 16,
-        paddingHorizontal: 8,
-        width: "100%",
-        alignItems: "flex-start"
-      }}>
-        <ProfileSectionTitle>Personal information</ProfileSectionTitle>
-        <FormInput label="First name" value={firstname} onChangeValue={setFirstname} />
-        <FormInput label="Last name" value={lastname} onChangeValue={setLastname} />
-        <FormInput label="Email" value={email} onChangeValue={setEmail} keyboardType="email-address" />
-        <FormInput label="Phone number" value={phone} onChangeValue={setPhone} keyboardType="phone-pad" />
+      <ScrollView>
+        <View style={{
+          borderWidth: 1,
+          borderColor: '#ddd',
+          borderRadius: 16,
+          paddingVertical: 16,
+          paddingHorizontal: 8,
+          width: "100%",
+          alignItems: "flex-start"
+        }}>
+          <ProfileSectionTitle>Personal information</ProfileSectionTitle>
+          <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 16, gap: 16, alignItems: 'center' }}>
+            {image && <Image source={{ uri: image }} style={{ width: 50, height: 50, borderRadius: "100%" }} />}
+            <PrimaryButton action={pickImage}>{image ? 'Change' : 'Select image'}</PrimaryButton>
+            <TertiaryButton action={() => setImage('')}>Remove</TertiaryButton>
+          </View>
 
-        <ProfileSectionTitle>E-mail notifications</ProfileSectionTitle>
-        <FormCheckbox label="Order statuses" value={orderStatuses} onChangeValue={setOrderStatuses} />
-        <FormCheckbox label="Password changes" value={passwordChanges} onChangeValue={setPasswordChanges} />
-        <FormCheckbox label="Special offers" value={specialOffers} onChangeValue={setSpecialOffers} />
-        <FormCheckbox label="Newsletter" value={newsletter} onChangeValue={setNewsletter} />
+          <FormInput label="First name" value={firstname} onChangeValue={setFirstname} />
+          <FormInput label="Last name" value={lastname} onChangeValue={setLastname} />
+          <FormInput label="Email" value={email} onChangeValue={setEmail} keyboardType="email-address" />
+          <FormInput label="Phone number" value={phone} onChangeValue={setPhone} keyboardType="phone-pad" />
 
-        <SecondaryButton action={logout}>Log out</SecondaryButton>
-        <View style={{ width: '100%', marginTop: 16, display: 'flex', flexDirection: 'row', gap: 16, justifyContent: 'center' }}>
-          <TertiaryButton action={(async () => {
-            await retrieveAllFromAsyncStorage()
-          })}>Discard changes</TertiaryButton>
-          <PrimaryButton action={onPressSaveButton}>Save changes</PrimaryButton>
+          <ProfileSectionTitle>E-mail notifications</ProfileSectionTitle>
+          <FormCheckbox label="Order statuses" value={orderStatuses} onChangeValue={setOrderStatuses} />
+          <FormCheckbox label="Password changes" value={passwordChanges} onChangeValue={setPasswordChanges} />
+          <FormCheckbox label="Special offers" value={specialOffers} onChangeValue={setSpecialOffers} />
+          <FormCheckbox label="Newsletter" value={newsletter} onChangeValue={setNewsletter} />
+
+          <SecondaryButton action={logout}>Log out</SecondaryButton>
+          <View style={{ width: '100%', marginTop: 16, display: 'flex', flexDirection: 'row', gap: 16, justifyContent: 'center' }}>
+            <TertiaryButton action={(async () => {
+              await retrieveAllFromAsyncStorage()
+            })}>Discard changes</TertiaryButton>
+            <PrimaryButton action={onPressSaveButton}>Save changes</PrimaryButton>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   </View>
 }

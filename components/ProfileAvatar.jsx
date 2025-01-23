@@ -7,7 +7,7 @@ export default function ProfileAvatar({ userData }) {
 
     const image = userData.profilePicture
 
-    return (image ? <Image src={image} /> : <View>
+    return (image ? <Image source={{ uri: image }} style={{ width: 50, height: 50, borderRadius: "100%" }} /> : <View>
         <Text style={{
             flex: 1,
             alignItems: 'center',
