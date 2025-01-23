@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Image, ScrollView, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Profile() {
@@ -97,11 +97,18 @@ export default function Profile() {
           borderColor: '#ddd',
           borderRadius: 16,
           paddingVertical: 16,
+          paddingBottom: 72,
           paddingHorizontal: 8,
           width: "100%",
           alignItems: "flex-start"
         }}>
           <ProfileSectionTitle>Personal information</ProfileSectionTitle>
+          <Text style={{
+            marginBottom: 8,
+            fontSize: 12,
+            fontWeight: "bold",
+            color: "gray"
+          }}>Avatar</Text>
           <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 16, gap: 16, alignItems: 'center' }}>
             {image && <Image source={{ uri: image }} style={{ width: 50, height: 50, borderRadius: "100%" }} />}
             <PrimaryButton action={pickImage}>{image ? 'Change' : 'Select image'}</PrimaryButton>
