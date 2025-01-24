@@ -2,9 +2,10 @@ import Header from '@/components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MenuListItem from '../components/MenuListItem';
+import * as SQLite from 'expo-sqlite';
 
 const URL_API_MENU = 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json'
 
@@ -13,20 +14,31 @@ export default function Home() {
     const [userData, setUserdata] = useState({ firstname: 'J', lastname: 'D' })
     const [image, setImage] = useState(null);
     const [menu, setMenu] = useState([])
+    let db
 
     useEffect(() => {
         (async () => {
-            setImage(await AsyncStorage.getItem("@ProfilePicture") || null)
+            try {
+                setImage(await AsyncStorage.getItem("@ProfilePicture") || null)
+                db = await SQLite.openDatabaseAsync('LittleLemonMennu');
 
-            if (await AsyncStorage.getItem("@MenuInStorage") === 'true') {
-                // get from SQLite
+                if (await AsyncStorage.getItem("@MenuInStorage") === 'true') {
+                    const dbMenu = await db.getAllAsync("SELECT * FROM menu;");
+                    setMenu(dbMenu)
+                    return dbMenu;
+                }
 
-                return;
+                const response = await fetch(URL_API_MENU)
+                const result = await response.json()
+                setMenu(result.menu)
+                await db.runAsync(
+                    'INSERT INTO menu (name, description, price, image) VALUES ' +
+                    result.menu.map(item => `("${item.name}", "${item.description}", "${item.price}", "${item.image}")`).join(',')
+                );
+                await AsyncStorage.setItem("@MenuInStorage", 'true')
+            } catch (e) {
+                console.log(e)
             }
-
-            const response = await fetch(URL_API_MENU)
-            const result = await response.json()
-            setMenu(result.menu)
         })()
     }, [])
 
