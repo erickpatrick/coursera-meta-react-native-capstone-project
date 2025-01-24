@@ -89,7 +89,7 @@ export default function Profile() {
 
   return <View style={{ flex: 1, backgroundColor: 'white' }}>
     <SafeAreaView style={{ flex: 1, padding: 16 }}>
-      <Header userData={userData} />
+      <Header userData={userData} showBackButton={true} />
 
       <ScrollView>
         <View style={{

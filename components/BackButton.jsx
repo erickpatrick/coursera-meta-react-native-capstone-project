@@ -1,8 +1,10 @@
+import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 export default function BackButton() {
+    const router = useRouter()
     return <View>
-        <Pressable>
+        <Pressable onPress={() => router.dismiss()}>
             <Text style={{
                 borderRadius: '100%',
                 paddingVertical: 14,
