@@ -39,7 +39,8 @@
         {
           "photosPermission": "The app accesses your photos so you can select for your profile picture."
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true
