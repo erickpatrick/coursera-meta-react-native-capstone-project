@@ -14,7 +14,7 @@ export default function RootLayout() {
     try {
       (async function () {
         if (await AsyncStorage.getItem('@UserFinishedOnboarding')) {
-          router.navigate('/profile')
+          router.navigate('/home')
         }
       })();
     } catch (e) {

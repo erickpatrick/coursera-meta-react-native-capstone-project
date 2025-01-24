@@ -65,7 +65,7 @@ export default function Index() {
         />
       </View>
       <View style={{ height: 50, width: "100%", alignItems: "flex-end" }}>
-        <Link href="/profile" asChild disabled={isButtonDisabled} onPress={setSkipOnboarding}>
+        <Link href="/home" asChild disabled={isButtonDisabled} onPress={setSkipOnboarding}>
           <Pressable>
             <Text style={{
               backgroundColor: isButtonDisabled ? '#eee' : '#495e57',
