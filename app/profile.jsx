@@ -74,9 +74,7 @@ export default function Profile() {
   }
 
   useEffect(() => {
-    (async () => {
-      await retrieveAllFromAsyncStorage()
-    })()
+    (async () => { await retrieveAllFromAsyncStorage() })()
   }, [])
 
   useEffect(() => {
@@ -92,23 +90,9 @@ export default function Profile() {
       <Header userData={userData} showBackButton={true} />
 
       <ScrollView>
-        <View style={{
-          borderWidth: 1,
-          borderColor: '#ddd',
-          borderRadius: 16,
-          paddingVertical: 16,
-          paddingBottom: 72,
-          paddingHorizontal: 8,
-          width: "100%",
-          alignItems: "flex-start"
-        }}>
+        <View style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 16, paddingVertical: 16, paddingBottom: 72, paddingHorizontal: 8, width: "100%", alignItems: "flex-start" }}>
           <ProfileSectionTitle>Personal information</ProfileSectionTitle>
-          <Text style={{
-            marginBottom: 8,
-            fontSize: 12,
-            fontWeight: "bold",
-            color: "gray"
-          }}>Avatar</Text>
+          <Text style={{ marginBottom: 8, fontSize: 12, fontWeight: "bold", color: "gray" }}>Avatar</Text>
           <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 16, gap: 16, alignItems: 'center' }}>
             {image && <Image source={{ uri: image }} style={{ width: 50, height: 50, borderRadius: "100%" }} />}
             <PrimaryButton action={pickImage}>{image ? 'Change' : 'Select image'}</PrimaryButton>
@@ -128,9 +112,7 @@ export default function Profile() {
 
           <SecondaryButton action={logout}>Log out</SecondaryButton>
           <View style={{ width: '100%', marginTop: 16, display: 'flex', flexDirection: 'row', gap: 16, justifyContent: 'center' }}>
-            <TertiaryButton action={(async () => {
-              await retrieveAllFromAsyncStorage()
-            })}>Discard changes</TertiaryButton>
+            <TertiaryButton action={(async () => { await retrieveAllFromAsyncStorage() })}>Discard changes</TertiaryButton>
             <PrimaryButton action={onPressSaveButton}>Save changes</PrimaryButton>
           </View>
         </View>

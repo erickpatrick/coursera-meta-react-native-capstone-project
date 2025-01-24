@@ -37,7 +37,7 @@ export default function Home() {
                 );
                 await AsyncStorage.setItem("@MenuInStorage", 'true')
             } catch (e) {
-                console.log(e)
+                console.log("Problem getting menu content from API or DB >> ", e)
             }
         })()
     }, [])
