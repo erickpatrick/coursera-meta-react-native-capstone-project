@@ -51,13 +51,6 @@ export default function Profile() {
     (async function () { await AsyncStorage.clear() })();
     const db = SQLite.openDatabaseSync('LittleLemonMenu');
     db.execSync(`DROP TABLE menu;`)
-    // (async () => {
-    //   // 
-    //   // await db.execAsync(`DROP TABLE menu;`);
-    //   SQLite.closeSync('LittleLemonMenu')
-    //   SQLite.deleteAsync('LittleLemonMenu')
-    //   SQLite.open
-    // })();
     router.dismissAll()
   }
 
