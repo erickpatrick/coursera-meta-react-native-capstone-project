@@ -16,6 +16,7 @@ export default function Home() {
     const [image, setImage] = useState(null);
     const [menu, setMenu] = useState([])
     const [categories, setCategories] = useState([])
+    const [filters, setFilters] = useState([])
     let db
 
     useEffect(() => {
@@ -63,14 +64,18 @@ export default function Home() {
         // console.log(categories)
     }, [categories])
 
+    useEffect(() => {
+        // console.log(filters)
+    }, [filters])
+
     return <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SafeAreaView style={{ flex: 1, padding: 16 }}>
             <Header userData={userData} showBackButton={false} />
 
-            <SearchFilter categories={categories} />
+            <SearchFilter categories={categories} setFilters={setFilters} />
 
             <FlatList
-                data={menu}
+                data={menu.filter(item => filters.includes(item.category) || filters.length == 0)}
                 renderItem={({ item }) => <MenuListItem
                     title={item.name}
                     image={item.image}
