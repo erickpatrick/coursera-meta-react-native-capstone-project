@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { AvatarContext } from './_layout';
 import parsePhoneNumber from 'libphonenumber-js'
 import { validateEmail } from '../app/index'
+import * as SQLite from 'expo-sqlite';
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -48,10 +49,15 @@ export default function Profile() {
 
   function logout(_event) {
     (async function () { await AsyncStorage.clear() })();
-    (async () => {
-      const db = await SQLite.openDatabaseAsync('LittleLemonMenu');
-      await db.execAsync(`DROP TABLE menu;`);
-    })();
+    const db = SQLite.openDatabaseSync('LittleLemonMenu');
+    db.execSync(`DROP TABLE menu;`)
+    // (async () => {
+    //   // 
+    //   // await db.execAsync(`DROP TABLE menu;`);
+    //   SQLite.closeSync('LittleLemonMenu')
+    //   SQLite.deleteAsync('LittleLemonMenu')
+    //   SQLite.open
+    // })();
     router.dismissAll()
   }
 
@@ -104,7 +110,7 @@ export default function Profile() {
           <Text style={{ marginBottom: 8, fontSize: 12, fontWeight: "bold", color: "gray" }}>Avatar</Text>
           <View style={{ display: 'flex', flexDirection: 'row', marginBottom: 16, gap: 16, alignItems: 'center' }}>
             {image && <Image source={{ uri: image }} style={{ width: 50, height: 50, borderRadius: "100%" }} />}
-            <PrimaryButton action={pickImage}>{image ? 'Change' : 'Select image'}</PrimaryButton>
+            <PrimaryButton action={pickImage} disabled={true}>{image ? 'Change' : 'Select image'}</PrimaryButton>
             <TertiaryButton action={() => setImage('')}>Remove</TertiaryButton>
           </View>
 
