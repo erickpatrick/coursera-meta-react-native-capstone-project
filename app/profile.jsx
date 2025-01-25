@@ -8,14 +8,15 @@ import TertiaryButton from '@/components/TertiaryButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { AvatarContext } from './_layout';
 
 export default function Profile() {
   const navigation = useNavigation();
   const router = useRouter()
-  const [userData, setUserdata] = useState({ firstname: 'J', lastname: 'D' })
+  const { setAvatar } = useContext(AvatarContext)
 
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
@@ -86,12 +87,12 @@ export default function Profile() {
   }, [navigation]);
 
   useEffect(() => {
-    setUserdata({ firstname, lastname, profilePicture: image })
+    setAvatar({ firstname, lastname, image })
   }, [firstname, lastname, image])
 
   return <View style={{ flex: 1, backgroundColor: 'white' }}>
     <SafeAreaView style={{ flex: 1, padding: 16 }}>
-      <Header userData={userData} showBackButton={true} />
+      <Header showBackButton={true} />
 
       <ScrollView>
         <View style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 16, paddingVertical: 16, paddingBottom: 72, paddingHorizontal: 8, width: "100%", alignItems: "flex-start" }}>

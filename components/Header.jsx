@@ -3,7 +3,7 @@ import LittleLemonLogo from '@/components/LittleLemonLogo';
 import ProfileAvatar from '@/components/ProfileAvatar';
 import { View } from "react-native";
 
-export default function Header({ userData, showBackButton }) {
+export default function Header({ showBackButton }) {
     return <View style={{
         flexDirection: 'row',
         marginBottom: 16,
@@ -15,6 +15,6 @@ export default function Header({ userData, showBackButton }) {
     }}>
         {showBackButton ? <BackButton /> : <View style={{ width: 32, height: 32 }} />}
         <LittleLemonLogo />
-        <ProfileAvatar userData={userData} />
+        <ProfileAvatar />
     </View>
 }

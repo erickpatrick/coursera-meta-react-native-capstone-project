@@ -1,18 +1,20 @@
 import Header from '@/components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MenuListItem from '../components/MenuListItem';
 import * as SQLite from 'expo-sqlite';
 import SearchFilter from '../components/SearchFilter';
 import Hero from '../components/Hero';
+import { AvatarContext } from './_layout'
 
 const URL_API_MENU = 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json'
 
 export default function Home() {
     const navigation = useNavigation();
+    const { avatar, setAvatar } = useContext(AvatarContext)
     const [userData, setUserdata] = useState({ firstname: 'J', lastname: 'D' })
     const [image, setImage] = useState(null);
     const [menu, setMenu] = useState([])
@@ -39,11 +41,11 @@ export default function Home() {
                 const result = await response.json()
                 setMenu(result.menu)
                 setCategories(result.menu.filter(item => { category: item.category }))
-                await AsyncStorage.setItem("@MenuInStorage", 'true')
                 await db.runAsync(
                     'INSERT INTO menu (name, description, price, image, category) VALUES ' +
                     result.menu.map(item => `("${item.name}", "${item.description}", "${item.price}", "${item.image}", "${item.category}")`).join(',')
                 );
+                await AsyncStorage.setItem("@MenuInStorage", 'true')
             } catch (e) {
                 console.log("Problem getting menu content from API or DB >> ", e)
             }
@@ -56,6 +58,7 @@ export default function Home() {
 
     useEffect(() => {
         setUserdata({ ...userData, profilePicture: image })
+        setAvatar({ ...avatar, image })
     }, [image])
 
     useEffect(() => {
@@ -84,7 +87,7 @@ export default function Home() {
 
     return <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SafeAreaView style={{ flex: 1, }}>
-            <Header userData={userData} showBackButton={false} />
+            <Header showBackButton={false} />
 
             <Hero query={query} setQuery={setQuery} />
 
