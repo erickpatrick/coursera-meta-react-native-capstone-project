@@ -83,26 +83,28 @@ export default function Home() {
     }, [filters, query, setMenu])
 
     return <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <SafeAreaView style={{ flex: 1, padding: 16 }}>
+        <SafeAreaView style={{ flex: 1, }}>
             <Header userData={userData} showBackButton={false} />
 
-            <Hero />
+            <Hero query={query} setQuery={setQuery} />
 
-            <SearchFilter categories={categories} setFilters={setFilters} />
+            <View style={{ flex: 1, padding: 16 }}>
+                <SearchFilter categories={categories} setFilters={setFilters} />
 
-            <FlatList
-                data={menu}
-                renderItem={({ item }) => <MenuListItem
-                    title={item.name}
-                    image={item.image}
-                    description={item.description}
-                    price={item.price}
-                />}
-                ItemSeparatorComponent={() => (
-                    <View style={{ backgroundColor: "#efefef", height: 1 }} />
-                )}
-                keyExtractor={item => item.name}
-            />
+                <FlatList
+                    data={menu}
+                    renderItem={({ item }) => <MenuListItem
+                        title={item.name}
+                        image={item.image}
+                        description={item.description}
+                        price={item.price}
+                    />}
+                    ItemSeparatorComponent={() => (
+                        <View style={{ backgroundColor: "#efefef", height: 1 }} />
+                    )}
+                    keyExtractor={item => item.name}
+                />
+            </View>
         </SafeAreaView>
     </View>
 }

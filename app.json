@@ -40,7 +40,16 @@
           "photosPermission": "The app accesses your photos so you can select for your profile picture."
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Karla-Regular.ttf",
+            "./assets/fonts/MarkaziText-Regular.ttf"
+          ]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
