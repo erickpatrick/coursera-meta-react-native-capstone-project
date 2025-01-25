@@ -21,7 +21,7 @@ export default function RootLayout() {
         const db = await SQLite.openDatabaseAsync('LittleLemonMennu');
         await db.execAsync(`
           PRAGMA journal_mode = WAL;
-          CREATE TABLE IF NOT EXISTS menu (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, description TEXT NOT NULL, image TEXT NOT NULL, price TEXT NOT NULL);
+          CREATE TABLE IF NOT EXISTS menu (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, category TEXT NOT NULL, description TEXT NOT NULL, image TEXT NOT NULL, price TEXT NOT NULL);
           `);
       })();
     } catch (e) {

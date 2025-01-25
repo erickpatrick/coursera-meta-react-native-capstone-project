@@ -6,6 +6,7 @@ import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import MenuListItem from '../components/MenuListItem';
 import * as SQLite from 'expo-sqlite';
+import SearchFilter from '../components/SearchFilter';
 
 const URL_API_MENU = 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json'
 
@@ -14,6 +15,7 @@ export default function Home() {
     const [userData, setUserdata] = useState({ firstname: 'J', lastname: 'D' })
     const [image, setImage] = useState(null);
     const [menu, setMenu] = useState([])
+    const [categories, setCategories] = useState([])
     let db
 
     useEffect(() => {
@@ -24,6 +26,8 @@ export default function Home() {
 
                 if (await AsyncStorage.getItem("@MenuInStorage") === 'true') {
                     const dbMenu = await db.getAllAsync("SELECT * FROM menu;");
+                    const categories = await db.getAllAsync("SELECT DISTINCT category FROM menu;");
+                    setCategories(categories)
                     setMenu(dbMenu)
                     return dbMenu;
                 }
@@ -31,9 +35,10 @@ export default function Home() {
                 const response = await fetch(URL_API_MENU)
                 const result = await response.json()
                 setMenu(result.menu)
+                setCategories(result.menu.filter(item => { category: item.category }))
                 await db.runAsync(
-                    'INSERT INTO menu (name, description, price, image) VALUES ' +
-                    result.menu.map(item => `("${item.name}", "${item.description}", "${item.price}", "${item.image}")`).join(',')
+                    'INSERT INTO menu (name, description, price, image, category) VALUES ' +
+                    result.menu.map(item => `("${item.name}", "${item.description}", "${item.price}", "${item.image}", "${item.category}")`).join(',')
                 );
                 await AsyncStorage.setItem("@MenuInStorage", 'true')
             } catch (e) {
@@ -51,12 +56,18 @@ export default function Home() {
     }, [image])
 
     useEffect(() => {
-        console.log(menu)
+        //console.log(menu)
     }, [menu])
+
+    useEffect(() => {
+        // console.log(categories)
+    }, [categories])
 
     return <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SafeAreaView style={{ flex: 1, padding: 16 }}>
             <Header userData={userData} showBackButton={false} />
+
+            <SearchFilter categories={categories} />
 
             <FlatList
                 data={menu}
