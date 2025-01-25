@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MenuListItem from '../components/MenuListItem';
 import * as SQLite from 'expo-sqlite';
 import SearchFilter from '../components/SearchFilter';
+import Hero from '../components/Hero';
 
 const URL_API_MENU = 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json'
 
@@ -17,6 +18,7 @@ export default function Home() {
     const [menu, setMenu] = useState([])
     const [categories, setCategories] = useState([])
     const [filters, setFilters] = useState([])
+    const [query, setQuery] = useState('')
     let db
 
     useEffect(() => {
@@ -57,25 +59,39 @@ export default function Home() {
     }, [image])
 
     useEffect(() => {
-        //console.log(menu)
-    }, [menu])
+        (async () => {
+            try {
+                db = await SQLite.openDatabaseAsync('LittleLemonMennu');
+                let select = "SELECT * FROM menu WHERE 1=1 "
 
-    useEffect(() => {
-        // console.log(categories)
-    }, [categories])
+                if (filters.length > 0) {
+                    select += `AND category IN (${filters.map(category => `"${category}"`).join(',')}) `
+                }
 
-    useEffect(() => {
-        // console.log(filters)
-    }, [filters])
+                if (query.length > 0) {
+                    select += `AND name LIKE "%${query}%"`
+                }
+
+                select += ';'
+
+                const dbMenu = await db.getAllAsync(select);
+                setMenu(dbMenu)
+            } catch (e) {
+                console.log("ERROR WHILE FILTER OR QUERYING >> ", e)
+            }
+        })()
+    }, [filters, query, setMenu])
 
     return <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SafeAreaView style={{ flex: 1, padding: 16 }}>
             <Header userData={userData} showBackButton={false} />
 
+            <Hero />
+
             <SearchFilter categories={categories} setFilters={setFilters} />
 
             <FlatList
-                data={menu.filter(item => filters.includes(item.category) || filters.length == 0)}
+                data={menu}
                 renderItem={({ item }) => <MenuListItem
                     title={item.name}
                     image={item.image}
