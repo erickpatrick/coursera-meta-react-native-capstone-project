@@ -28,7 +28,7 @@ export default function Hero({ query, setQuery }) {
             </View>
             <Image source={heroImage} style={{ height: 150, width: 130, objectFit: 'cover', borderRadius: 16 }} />
         </View>
-        <View style={{ display: 'flex', position: 'relative' }}>
+        <View style={{ display: query == undefined ? 'none' : 'flex', position: 'relative' }}>
             <Fontisto style={{ position: 'absolute', zIndex: 10, top: 12, left: 12 }} name="search" size={16} color="black" />
             <TextInput
                 style={{
