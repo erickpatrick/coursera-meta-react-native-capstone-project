@@ -3,16 +3,15 @@ import { Pressable, Text, View } from "react-native";
 
 export default function BackButton() {
     const router = useRouter()
-    return <View>
-        <Pressable onPress={() => router.dismiss()}>
-            <Text style={{
-                borderRadius: '100%',
-                paddingVertical: 14,
-                paddingHorizontal: 16,
-                backgroundColor: '#495e57',
-                color: 'white',
-                fontWeight: 'bold'
-            }}>←</Text>
-        </Pressable>
-    </View>
+    return <Text onPress={() => router.dismiss()} style={{
+        height: 50,
+        width: 50,
+        display: 'flex',
+        textAlign: 'center',
+        padding: 16,
+        borderRadius: '100%',
+        backgroundColor: '#495e57',
+        color: 'white',
+        fontWeight: 'bold'
+    }}>←</Text>
 }
