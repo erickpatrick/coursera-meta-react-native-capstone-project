@@ -1,6 +1,23 @@
-# Welcome to your Expo app 👋
+# Capstone Project for Coursera's Meta React Native Specialization
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+- Learner: Erick Patrick Alvarenga Rocha
+- Submission date: 25.01.2025
+- Figma file: [Check it here](prototype-table-booking-by-erick-rocha.fig)
+
+Thank you for checking my project.
+
+This is the repository for the Capstone project of the Coursera's Meta React Native Specialization. We are tasked of creating some sort of "Food delivery app" with super contrained functionality:
+
+- Load menu items from API and save to local database (SQLite)
+- Search and filter menu items from DB
+- Save user information in App own storage
+- Load images from internet
+
+The curren project uses the latest Expo version which uses the Expo App Router. The Expo App Router allows to export js/jsx/ts/tsx filex from the `app` folder as a "screen". 
+
+We define the default navigation type (stack, bottom navigator, modal) by configuring the `_layout.jsx` file. In my case, I'm using the `<Stack>` navigation type which is the same as using a Stack Navigator with a `<NavigationContainer>` from `@react-navigation/native` and `@react-navigation/native-stack`, but simpler.
+
+In the Expo App Router case, the initial route and screen is the provided by the `app/index.jsx` file, which would be equivalent to the `OnBoarding.jsx` file we're expected to create in the course.
 
 ## Get started
 
@@ -16,35 +33,9 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+# Wireframe
+![Wireframe](capstone-project-er-wireframe.png)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# Style Guide
+![Style Guide](capstone-project-er-style-guide.jpg)
