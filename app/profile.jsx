@@ -114,9 +114,14 @@ export default function Profile() {
             setIsEmailValid(validateEmail(email))
           }} keyboardType="email-address" />
           <FormInput label="Phone number" value={phone} onChangeValue={(number) => {
-            const parsedPhone = parsePhoneNumber(number, 'US')
-            setIsPhoneValid(parsedPhone && parsedPhone.isValid())
-            setPhone(parsedPhone.formatNational())
+            if (number.length > 0) {
+              const parsedPhone = parsePhoneNumber(number, 'US')
+              setIsPhoneValid(parsedPhone && parsedPhone.isValid())
+              console.log(parsedPhone)
+              setPhone(parsedPhone == undefined ? number : parsedPhone.formatNational())
+            } else {
+              setPhone(number)
+            }
           }} keyboardType="phone-pad" />
 
           <ProfileSectionTitle>E-mail notifications</ProfileSectionTitle>
