@@ -9,6 +9,7 @@ import * as SQLite from 'expo-sqlite';
 import SearchFilter from '../components/SearchFilter';
 import Hero from '../components/Hero';
 import { AvatarContext } from './_layout'
+import { debounce } from 'lodash';
 
 const URL_API_MENU = 'https://raw.githubusercontent.com/Meta-Mobile-Developer-PC/Working-With-Data-API/main/capstone.json'
 
@@ -62,7 +63,7 @@ export default function Home() {
     }, [image])
 
     useEffect(() => {
-        (async () => {
+        debounce(async () => {
             try {
                 db = await SQLite.openDatabaseAsync('LittleLemonMenu');
                 let select = "SELECT * FROM menu WHERE 1=1 "
@@ -82,7 +83,7 @@ export default function Home() {
             } catch (e) {
                 console.log("ERROR WHILE FILTER OR QUERYING >> ", e)
             }
-        })()
+        }, 500)()
     }, [filters, query])
 
     return <View style={{ flex: 1, backgroundColor: 'white' }}>
