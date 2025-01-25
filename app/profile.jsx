@@ -12,6 +12,8 @@ import { useContext, useEffect, useState } from 'react';
 import { Alert, Image, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AvatarContext } from './_layout';
+import parsePhoneNumber from 'libphonenumber-js'
+import { validateEmail } from '../app/index'
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -21,7 +23,9 @@ export default function Profile() {
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
   const [email, setEmail] = useState('')
+  const [isEmailValid, setIsEmailValid] = useState(true)
   const [phone, setPhone] = useState('')
+  const [isPhoneValid, setIsPhoneValid] = useState(true)
   const [orderStatuses, setOrderStatuses] = useState('')
   const [passwordChanges, setPasswordChanges] = useState('')
   const [specialOffers, setSpecialOffers] = useState('')
@@ -106,8 +110,15 @@ export default function Profile() {
 
           <FormInput label="First name" value={firstname} onChangeValue={setFirstname} />
           <FormInput label="Last name" value={lastname} onChangeValue={setLastname} />
-          <FormInput label="Email" value={email} onChangeValue={setEmail} keyboardType="email-address" />
-          <FormInput label="Phone number" value={phone} onChangeValue={setPhone} keyboardType="phone-pad" />
+          <FormInput label="Email" value={email} onChangeValue={(email) => {
+            setEmail(email)
+            setIsEmailValid(validateEmail(email))
+          }} keyboardType="email-address" />
+          <FormInput label="Phone number" value={phone} onChangeValue={(number) => {
+            const parsedPhone = parsePhoneNumber(number, 'US')
+            setIsPhoneValid(parsedPhone && parsedPhone.isValid())
+            setPhone(parsedPhone.formatNational())
+          }} keyboardType="phone-pad" />
 
           <ProfileSectionTitle>E-mail notifications</ProfileSectionTitle>
           <FormCheckbox label="Order statuses" value={orderStatuses} onChangeValue={setOrderStatuses} />
@@ -118,7 +129,7 @@ export default function Profile() {
           <SecondaryButton action={logout}>Log out</SecondaryButton>
           <View style={{ width: '100%', marginTop: 16, display: 'flex', flexDirection: 'row', gap: 16, justifyContent: 'center' }}>
             <TertiaryButton action={(async () => { await retrieveAllFromAsyncStorage() })}>Discard changes</TertiaryButton>
-            <PrimaryButton action={onPressSaveButton}>Save changes</PrimaryButton>
+            <PrimaryButton action={onPressSaveButton} disabled={isPhoneValid && isEmailValid}>Save changes</PrimaryButton>
           </View>
         </View>
       </ScrollView>
