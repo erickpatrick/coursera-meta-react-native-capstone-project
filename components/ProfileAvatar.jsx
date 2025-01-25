@@ -10,22 +10,20 @@ export default function ProfileAvatar({ userData }) {
     const image = userData.profilePicture
 
     return <Link href="/profile" asChild>
-        <Pressable>
-            {image
-                ? <Image source={{ uri: image }} style={{ width: 50, height: 50, borderRadius: "100%" }} />
-                : <View>
-                    <Text style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: 11,
-                        borderRadius: "100%",
-                        fontSize: 24,
-                        backgroundColor: '#62d6c4',
-                        color: 'white',
-                        fontWeight: 'semibold'
-                    }}>{initials.toUpperCase()}</Text>
-                </View>}
-        </Pressable>
+        {image
+            ? <Image source={{ uri: image }} style={{ width: 50, height: 50, borderRadius: "100%" }} />
+            : <Text style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                width: 50,
+                padding: 11,
+                borderRadius: "100%",
+                fontSize: 24,
+                backgroundColor: '#62d6c4',
+                color: 'white',
+                fontWeight: 'semibold'
+            }}>{initials.toUpperCase()}</Text>
+        }
     </Link>
 }
