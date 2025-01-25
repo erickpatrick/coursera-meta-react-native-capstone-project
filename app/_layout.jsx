@@ -18,7 +18,7 @@ export default function RootLayout() {
           router.navigate('/home')
         }
 
-        const db = await SQLite.openDatabaseAsync('LittleLemonMennu');
+        const db = await SQLite.openDatabaseAsync('LittleLemonMenu');
         await db.execAsync(`
           PRAGMA journal_mode = WAL;
           CREATE TABLE IF NOT EXISTS menu (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, category TEXT NOT NULL, description TEXT NOT NULL, image TEXT NOT NULL, price TEXT NOT NULL);

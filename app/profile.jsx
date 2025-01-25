@@ -42,7 +42,11 @@ export default function Profile() {
   };
 
   function logout(_event) {
-    (async function () { await AsyncStorage.clear() })()
+    (async function () { await AsyncStorage.clear() })();
+    (async () => {
+      const db = await SQLite.openDatabaseAsync('LittleLemonMenu');
+      await db.execAsync(`DROP TABLE menu;`);
+    })();
     router.dismissAll()
   }
 

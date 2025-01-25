@@ -19,31 +19,31 @@ export default function Home() {
     const [categories, setCategories] = useState([])
     const [filters, setFilters] = useState([])
     const [query, setQuery] = useState('')
-    let db
+    let db = (async () => {
+        return await SQLite.openDatabaseAsync('LittleLemonMennu');
+    })()
 
     useEffect(() => {
         (async () => {
             try {
                 setImage(await AsyncStorage.getItem("@ProfilePicture") || null)
-                db = await SQLite.openDatabaseAsync('LittleLemonMennu');
+                db = await SQLite.openDatabaseAsync('LittleLemonMenu');
 
                 if (await AsyncStorage.getItem("@MenuInStorage") === 'true') {
-                    const dbMenu = await db.getAllAsync("SELECT * FROM menu;");
                     const categories = await db.getAllAsync("SELECT DISTINCT category FROM menu;");
                     setCategories(categories)
-                    setMenu(dbMenu)
-                    return dbMenu;
+                    return;
                 }
 
                 const response = await fetch(URL_API_MENU)
                 const result = await response.json()
                 setMenu(result.menu)
                 setCategories(result.menu.filter(item => { category: item.category }))
+                await AsyncStorage.setItem("@MenuInStorage", 'true')
                 await db.runAsync(
                     'INSERT INTO menu (name, description, price, image, category) VALUES ' +
                     result.menu.map(item => `("${item.name}", "${item.description}", "${item.price}", "${item.image}", "${item.category}")`).join(',')
                 );
-                await AsyncStorage.setItem("@MenuInStorage", 'true')
             } catch (e) {
                 console.log("Problem getting menu content from API or DB >> ", e)
             }
@@ -61,7 +61,7 @@ export default function Home() {
     useEffect(() => {
         (async () => {
             try {
-                db = await SQLite.openDatabaseAsync('LittleLemonMennu');
+                db = await SQLite.openDatabaseAsync('LittleLemonMenu');
                 let select = "SELECT * FROM menu WHERE 1=1 "
 
                 if (filters.length > 0) {
@@ -80,7 +80,7 @@ export default function Home() {
                 console.log("ERROR WHILE FILTER OR QUERYING >> ", e)
             }
         })()
-    }, [filters, query, setMenu])
+    }, [filters, query])
 
     return <View style={{ flex: 1, backgroundColor: 'white' }}>
         <SafeAreaView style={{ flex: 1, }}>
