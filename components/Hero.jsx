@@ -4,7 +4,7 @@ import { useFonts } from "expo-font";
 import Fontisto from '@expo/vector-icons/Fontisto';
 
 export default function Hero({ query, setQuery }) {
-    const [loaded, error] = useFonts({
+    const [_loaded, _error] = useFonts({
         'Karla': require('../assets/fonts/Karla-Regular.ttf'),
         'MarkaziText': require('../assets/fonts/MarkaziText-Regular.ttf'),
     });
