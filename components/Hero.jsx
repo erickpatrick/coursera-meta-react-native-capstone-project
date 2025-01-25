@@ -1,6 +1,7 @@
 import { Image, Text, TextInput, View } from "react-native";
 import heroImage from '../assets/images/Heroimage.png'
 import { useFonts } from "expo-font";
+import Fontisto from '@expo/vector-icons/Fontisto';
 
 export default function Hero({ query, setQuery }) {
     const [loaded, error] = useFonts({
@@ -27,17 +28,21 @@ export default function Hero({ query, setQuery }) {
             </View>
             <Image source={heroImage} style={{ height: 150, width: 130, objectFit: 'cover', borderRadius: 16 }} />
         </View>
-        <TextInput
-            style={{
-                backgroundColor: '#efefef',
-                borderColor: "lightgray",
-                borderWidth: 1,
-                width: "100%",
-                padding: 12,
-                borderRadius: 8
-            }}
-            onChangeText={setQuery}
-            value={query}
-        />
+        <View style={{ display: 'flex', position: 'relative' }}>
+            <Fontisto style={{ position: 'absolute', zIndex: 10, top: 12, left: 12 }} name="search" size={16} color="black" />
+            <TextInput
+                style={{
+                    backgroundColor: '#efefef',
+                    borderColor: "lightgray",
+                    borderWidth: 1,
+                    width: "100%",
+                    padding: 12,
+                    paddingLeft: 36,
+                    borderRadius: 8
+                }}
+                onChangeText={setQuery}
+                value={query}
+            />
+        </View>
     </View>
 }
